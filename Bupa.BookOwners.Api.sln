@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bupa.BookOwners.Api", "Bupa.BookOwners.Api\Bupa.BookOwners.Api.csproj", "{6F4A0E6A-D9A1-4754-A0F9-1F1D68944CC9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F4A0E6A-D9A1-4754-A0F9-1F1D68944CC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F4A0E6A-D9A1-4754-A0F9-1F1D68944CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F4A0E6A-D9A1-4754-A0F9-1F1D68944CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F4A0E6A-D9A1-4754-A0F9-1F1D68944CC9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93114B00-B426-4339-A6AB-CFDA7800B88E}
+	EndGlobalSection
+EndGlobal
