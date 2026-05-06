@@ -6,6 +6,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "AllowReactApp",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:5173") // Use your React URL
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    );
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,6 +36,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseCors("AllowReactApp");
 
 app.UseAuthorization();
 
