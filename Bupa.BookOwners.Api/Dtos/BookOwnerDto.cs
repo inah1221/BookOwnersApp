@@ -1,20 +1,23 @@
 ﻿namespace Bupa.BookOwner.Api.Dtos
 {
-    public class BookOwnerDto 
+    /// <summary>
+    /// Data Transfer Object for Book Owners
+    /// </summary>
+    public class BookOwnerDto
     {
         /// <summary>
         /// Name of the owner
         /// </summary>
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         /// <summary>
         /// Age of the owner
         /// </summary>
-        public int Age { get; set; }
+        public required int Age { get; set; }
 
         /// <summary>
         /// Books owned
         /// </summary>
-        public List<BookDto> Books { get; set; }
+        public List<BookDto>? Books { get; set; }
     }
 }

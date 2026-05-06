@@ -1,4 +1,6 @@
-﻿using Bupa.BookOwners.Api.Services.Implementations;
+﻿using Bupa.BookOwners.Api.HttpServices.Implementations;
+using Bupa.BookOwners.Api.HttpServices.Interfaces;
+using Bupa.BookOwners.Api.Services.Implementations;
 using Bupa.BookOwners.Api.Services.Interfaces;
 
 namespace Bupa.BookOwner.Api.Extensions

@@ -1,17 +1,13 @@
-﻿using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Bupa.BookOwner.Api.Dtos;
-using Bupa.BookOwners.Api.Services.Interfaces;
-using Microsoft.Extensions.Logging;
+﻿using Bupa.BookOwner.Api.Dtos;
+using Bupa.BookOwners.Api.HttpServices.Interfaces;
 
-namespace Bupa.BookOwners.Api.Services.Implementations
+namespace Bupa.BookOwners.Api.HttpServices.Implementations
 {
     public class BookOwnersHttpService : IBookOwnersHttpService
     {
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _bookOwnersUrl;
+        private readonly string _baseUrl;
 
         public BookOwnersHttpService(
             IConfiguration configuration,
@@ -22,14 +18,19 @@ namespace Bupa.BookOwners.Api.Services.Implementations
             _logger = logger;
             _httpClientFactory = httpClientFactory;
 
-            _bookOwnersUrl = configuration["Apis:BookOwnersUrl"] ?? string.Empty;
+            _baseUrl = configuration["Apis:BaseUrl"] ?? string.Empty;
         }
 
+        /// <summary>
+        /// Method using HttpClient to fetch Book Owners data from the API
+        /// </summary>
+        /// <returns>IEnumerable<BookOwnerDto></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IEnumerable<BookOwnerDto>> FetchBookOwnersDataAsync()
         {
             try
             {
-                if (_bookOwnersUrl == null)
+                if (_baseUrl == null)
                 {
                     string missingConfigMessage = "Book Owners URL is required";
                     _logger.LogError(missingConfigMessage);
@@ -37,7 +38,7 @@ namespace Bupa.BookOwners.Api.Services.Implementations
                     throw new InvalidOperationException(missingConfigMessage);
                 }
 
-                Uri uri = new Uri(_bookOwnersUrl);
+                Uri uri = new Uri($"{_baseUrl}/bookowners");
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
                 // Can add authorization headers here
                 var client = _httpClientFactory.CreateClient();
@@ -46,17 +47,19 @@ namespace Bupa.BookOwners.Api.Services.Implementations
                 response.EnsureSuccessStatusCode();
                 var mediaType = response.Content.Headers.ContentType?.MediaType;
 
-                if (mediaType == "application/json")
+                if (
+                    response.Content == null
+                    || response.Content.Headers.ContentLength == 0
+                    || mediaType != "application/json"
+                )
                 {
-                    var result = await response.Content.ReadFromJsonAsync<List<BookOwnerDto>>();
-                    return result;
-                }
-                else
-                {
-                    string errorMessage = $"Response body in an invalid format.";
+                    string errorMessage = $"Response body is empty or in an invalid format.";
                     _logger.LogError(errorMessage);
                     throw new InvalidOperationException(errorMessage);
                 }
+
+                var result = await response.Content.ReadFromJsonAsync<List<BookOwnerDto>>();
+                return result;
             }
             catch (Exception ex)
             {

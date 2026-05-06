@@ -23,11 +23,11 @@ namespace Bupa.BookOwner.Api.Controllers
             _bookOwnersService = bookOwnerService;
         }
 
-        [HttpGet(Name = "GetBooks")]
+        [HttpGet(nameof(GetBooks))]
         public async Task<IActionResult> GetBooks()
         {
             var books = await _bookOwnersService.GetBooks();
-            if (books == null)
+            if (books == null || books.Count() == 0)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "Book list is empty");
             }
