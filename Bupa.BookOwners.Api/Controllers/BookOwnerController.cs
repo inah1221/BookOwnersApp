@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Bupa.BookOwners.Api.Enums;
 using Bupa.BookOwners.Api.Services.Interfaces;
 using Bupa.BookOwners.Api.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +33,13 @@ namespace Bupa.BookOwner.Api.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, "Book list is empty");
             }
             return Ok(books);
+        }
+
+        [HttpGet(nameof(GetBookTypes))]
+        public IActionResult GetBookTypes()
+        {
+            var bookTypes = Enum.GetNames(typeof(BookType)).ToList();
+            return Ok(bookTypes);
         }
     }
 }
