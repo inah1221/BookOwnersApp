@@ -2,8 +2,8 @@
 {
     public enum BookType
     {
-        Hardcover = 1,
-        Paperback = 2,
-        Ebook = 3,
+        Hardcover,
+        Paperback,
+        Ebook,
     }
 }

@@ -8,7 +8,7 @@ namespace Bupa.BookOwners.Api.Services.Interfaces
         /// <summary>
         /// Method that calls HttpClient to get books and transform to View Model
         /// </summary>
-        /// <returns>List<BookByAgeCategoryViewModel></returns>
+        /// <returns>List of books by categroy</returns>
         Task<List<BookByAgeCategoryViewModel>> GetBooks();
     }
 }

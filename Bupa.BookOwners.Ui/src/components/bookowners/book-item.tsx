@@ -1,5 +1,5 @@
 import AccordionDetails from '@mui/material/AccordionDetails';
-import type Book from '../interfaces/book';
+import type Book from '../../interfaces/book';
 
 export default function BookItem({ name, type }: Book) {
   return (

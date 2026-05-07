@@ -34,13 +34,11 @@ namespace Bupa.BookOwners.Api.HttpServices.Implementations
                 {
                     string missingConfigMessage = "Book Owners URL is required";
                     _logger.LogError(missingConfigMessage);
-                    // TODO: Update to a more specific configuration exception?
                     throw new InvalidOperationException(missingConfigMessage);
                 }
 
                 Uri uri = new Uri($"{_baseUrl}/bookowners");
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
-                // Can add authorization headers here
                 var client = _httpClientFactory.CreateClient();
                 var response = await client.SendAsync(request);
 

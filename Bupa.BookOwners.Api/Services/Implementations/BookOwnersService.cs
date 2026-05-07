@@ -25,7 +25,7 @@ namespace Bupa.BookOwners.Api.Services.Implementations
         /// <summary>
         /// Method that calls Book Owners Http Service to get books and transform to View Model
         /// </summary>
-        /// <returns>List<BookByAgeCategoryViewModel></returns>
+        /// <returns>List of books by category</returns>
         public async Task<List<BookByAgeCategoryViewModel>> GetBooks()
         {
             List<BookByAgeCategoryViewModel> bookByAgeCategories = [];

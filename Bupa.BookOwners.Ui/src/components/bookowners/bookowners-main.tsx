@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import type BooksByAgeCategory from '../interfaces/booksByAgeCategory';
+import type BooksByAgeCategory from '../../interfaces/booksByAgeCategory';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { Button, MenuItem, Select } from '@mui/material';
 import BookList from './book-list';
-import { ALL, API_URL } from '../constants';
+import { ALL } from '../../constants';
+import {
+  fetchBookOwners,
+  fetchBookTypes,
+} from '../../services/bookOwnerService';
 
 export default function BookOwners() {
   const [bookOwnersList, setBookOwnersList] = useState<BooksByAgeCategory[]>(
@@ -14,27 +18,19 @@ export default function BookOwners() {
   const [bookTypes, setBookTypes] = useState<string[]>([]);
   const [selectedBookType, setSelectedBookType] = useState<string>(ALL);
 
-  const fetchBookOwners = async () => {
-    const response = await fetch(`${API_URL}/api/BookOwner/GetBooks`);
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-    const jsonData = await response.json();
-    setBookOwnersList(jsonData);
-  };
-
-  const fetchBookTypes = async () => {
-    const response = await fetch(`${API_URL}/api/BookOwner/GetBookTypes`);
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-    const jsonData = await response.json();
-    setBookTypes(jsonData);
-  };
-
   useEffect(() => {
-    fetchBookOwners();
-    fetchBookTypes();
+    fetchBookOwners()
+      .then((data) => setBookOwnersList(data))
+      .catch((error) => {
+        console.error(error);
+        setBookOwnersList([]);
+      });
+    fetchBookTypes()
+      .then((data) => setBookTypes(data))
+      .catch((error) => {
+        console.error(error);
+        setBookTypes([]);
+      });
   }, []);
 
   const handleClick = () => {
@@ -61,6 +57,7 @@ export default function BookOwners() {
           </MenuItem>
         ))}
       </Select>
+      {bookOwnersList.length === 0 && <p>No book owners found.</p>}
       {bookOwnersList.map((bookOwner) => {
         return (
           <Accordion defaultExpanded={true} key={bookOwner.ownerAgeCategory}>

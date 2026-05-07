@@ -1,19 +1,21 @@
+using System.Text;
 using Bupa.BookOwner.Api.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
-        "AllowReactApp",
+        "AllowBookOwnersApp",
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173") // Use your React URL
+                .WithOrigins(builder.Configuration["AllowedDomain"] ?? string.Empty)
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         }
@@ -24,6 +26,28 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
+
+builder
+    .Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty)
+            ),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddServices();
 
 var app = builder.Build();
@@ -39,8 +63,9 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors("AllowReactApp");
+app.UseCors("AllowBookOwnersApp");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

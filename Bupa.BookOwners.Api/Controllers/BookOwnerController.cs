@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bupa.BookOwner.Api.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/BookOwner")]
     public class BookOwnerController : ControllerBase
@@ -24,17 +24,26 @@ namespace Bupa.BookOwner.Api.Controllers
             _bookOwnersService = bookOwnerService;
         }
 
+        /// <summary>
+        /// Gets list of Books categorize by Owner's Age category, ordered alphabetically
+        /// </summary>
         [HttpGet(nameof(GetBooks))]
         public async Task<IActionResult> GetBooks()
         {
             var books = await _bookOwnersService.GetBooks();
             if (books == null || books.Count() == 0)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "Book list is empty");
+                var message = "Book list is empty";
+                _logger.LogError(message);
+                return StatusCode(StatusCodes.Status400BadRequest, message);
             }
             return Ok(books);
         }
 
+        /// <summary>
+        /// Gets Book Types
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(nameof(GetBookTypes))]
         public IActionResult GetBookTypes()
         {
