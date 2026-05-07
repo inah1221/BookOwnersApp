@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import './book-owners.scss';
-import type BooksByAgeCategory from '../../interfaces/booksByAgeCategory';
+import type BooksByAgeCategory from '../../types/booksByAgeCategory';
 import {
   fetchBookOwners,
   fetchBookTypes,
@@ -15,10 +14,12 @@ import {
   Accordion,
   Typography,
   CircularProgress,
+  type SelectChangeEvent,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import BookList from './book-list';
 import { ALL } from '../../constants';
+import './book-owners.scss';
 
 export default function BookOwners() {
   const [bookOwnersList, setBookOwnersList] = useState<BooksByAgeCategory[]>(
@@ -57,7 +58,7 @@ export default function BookOwners() {
       .finally(() => setLoading(false));
   };
 
-  const handleSelect = (event: any) => {
+  const handleSelect = (event: SelectChangeEvent) => {
     setSelectedBookType(event.target.value as string);
   };
 

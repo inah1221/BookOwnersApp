@@ -1,10 +1,10 @@
-import type Book from '../../interfaces/book';
+import type Book from '../../types/book';
 
 export default function BookItem({ name, type }: Book) {
   return (
     <>
       <p>
-        {name} - {type}
+        {name} ({type})
       </p>
     </>
   );

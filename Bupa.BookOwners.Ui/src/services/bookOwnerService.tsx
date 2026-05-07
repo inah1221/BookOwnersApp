@@ -1,5 +1,5 @@
 import { API_URL } from '../constants';
-import type BooksByAgeCategory from '../interfaces/booksByAgeCategory';
+import type BooksByAgeCategory from '../types/booksByAgeCategory';
 
 export const fetchBookOwners = async (): Promise<BooksByAgeCategory[]> => {
   const headers = setHeaders();
@@ -12,7 +12,7 @@ export const fetchBookOwners = async (): Promise<BooksByAgeCategory[]> => {
   return await response.json();
 };
 
-export const fetchBookTypes = async () => {
+export const fetchBookTypes = async (): Promise<string[]> => {
   const headers = setHeaders();
   const response = await fetch(`${API_URL}/api/BookOwner/GetBookTypes`, {
     headers,
