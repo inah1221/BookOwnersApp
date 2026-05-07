@@ -1,7 +1,8 @@
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { useMemo } from 'react';
-import BookItem from './book-item';
 import { ALL } from '../../constants';
+import BookItem from './book-item';
+import EmptyList from '../shared/empty-list';
 
 export default function BookList({ books, selectedBookType }: any) {
   const filteredBooks = useMemo(() => {
@@ -14,12 +15,12 @@ export default function BookList({ books, selectedBookType }: any) {
 
   return (
     <>
-      {filteredBooks.length === 0 && <p>No books found.</p>}
-      {filteredBooks.map((book: any) => (
-        <AccordionDetails key={book.name}>
-          <BookItem name={book.name} type={book.type} />
-        </AccordionDetails>
-      ))}
+      <AccordionDetails sx={{ textAlign: 'left' }}>
+        {filteredBooks.length === 0 && <EmptyList />}
+        {filteredBooks.map((book: any) => (
+          <BookItem key={book.name} name={book.name} type={book.type} />
+        ))}
+      </AccordionDetails>
     </>
   );
 }

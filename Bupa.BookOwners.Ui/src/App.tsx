@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './App.css';
-import BookOwners from './components/bookowners/bookowners-main';
+import BookOwners from './components/bookowners/book-owners';
 import { API_URL } from './constants';
 
 function App() {
   const token = localStorage.getItem('guestToken');
-  const [isAuthorized, setIsAuthorized] = useState(token !== null);
+  const isAuthorized = token !== null;
 
   useEffect(() => {
     const initializeAuth = async () => {
