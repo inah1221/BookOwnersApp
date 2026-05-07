@@ -21,9 +21,9 @@ function App() {
 
   return (
     <>
-      {isAuthorized && <BookOwners />}{' '}
-      {!isAuthorized && (
-        <div>Refresh to get guest token for authorization.</div>
+      {token !== null && <BookOwners />}
+      {token === null && (
+        <div>Guest token created. Refresh to see list of books.</div>
       )}
     </>
   );
