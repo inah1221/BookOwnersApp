@@ -1,8 +1,8 @@
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { useMemo } from 'react';
-import { ALL } from '../../constants';
 import BookItem from './book-item';
 import EmptyList from '../shared/empty-list';
+import { ALL } from '../../constants';
 
 export default function BookList({ books, selectedBookType }: any) {
   const filteredBooks = useMemo(() => {

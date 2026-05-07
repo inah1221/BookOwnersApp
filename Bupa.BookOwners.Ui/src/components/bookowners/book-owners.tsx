@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
+import './book-owners.scss';
 import type BooksByAgeCategory from '../../interfaces/booksByAgeCategory';
+import {
+  fetchBookOwners,
+  fetchBookTypes,
+} from '../../services/bookOwnerService';
+import EmptyList from '../shared/empty-list';
 import {
   Button,
   Grid,
@@ -8,16 +14,11 @@ import {
   AccordionSummary,
   Accordion,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import BookList from './book-list';
 import { ALL } from '../../constants';
-import {
-  fetchBookOwners,
-  fetchBookTypes,
-} from '../../services/bookOwnerService';
-import './book-owners.scss';
-import EmptyList from '../shared/empty-list';
 
 export default function BookOwners() {
   const [bookOwnersList, setBookOwnersList] = useState<BooksByAgeCategory[]>(
@@ -26,14 +27,17 @@ export default function BookOwners() {
 
   const [bookTypes, setBookTypes] = useState<string[]>([]);
   const [selectedBookType, setSelectedBookType] = useState<string>(ALL);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setLoading(true);
     fetchBookOwners()
       .then((data) => setBookOwnersList(data))
       .catch((error) => {
         console.error(error);
         setBookOwnersList([]);
-      });
+      })
+      .finally(() => setLoading(false));
     fetchBookTypes()
       .then((data) => setBookTypes(data))
       .catch((error) => {
@@ -43,12 +47,14 @@ export default function BookOwners() {
   }, []);
 
   const handleClick = () => {
+    setLoading(true);
     fetchBookOwners()
       .then((data) => setBookOwnersList(data))
       .catch((error) => {
         console.error(error);
         setBookOwnersList([]);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const handleSelect = (event: any) => {
@@ -57,12 +63,12 @@ export default function BookOwners() {
 
   return (
     <div className="book-owners-container">
-      <Typography variant="h4" component="h1" gutterBottom>
-        Book List By Age
+      <Typography variant="h4" component="h1" gutterBottom align="left">
+        Book List By Age Category
       </Typography>
       <Grid container spacing={3} className="filter-container">
         <Grid size={2}>Filter by Book Type:</Grid>
-        <Grid size={5}>
+        <Grid size={4}>
           <Select
             fullWidth
             variant="standard"
@@ -85,25 +91,27 @@ export default function BookOwners() {
           </Button>
         </Grid>
       </Grid>
-      {bookOwnersList.length === 0 && <EmptyList />}
-      {bookOwnersList.map((bookOwner) => {
-        return (
-          <Accordion defaultExpanded={true} key={bookOwner.ownerAgeCategory}>
-            <AccordionSummary
-              expandIcon={<ArrowDropDownIcon />}
-              key={bookOwner.ownerAgeCategory}
-            >
-              <Typography variant="h6" component="span">
-                {bookOwner.ownerAgeCategory}
-              </Typography>
-            </AccordionSummary>
-            <BookList
-              books={bookOwner.booksByAge}
-              selectedBookType={selectedBookType}
-            />
-          </Accordion>
-        );
-      })}
+      {loading && <CircularProgress aria-label="Loading…" />}
+      {!loading && bookOwnersList.length === 0 && <EmptyList />}
+      {!loading &&
+        bookOwnersList.map((bookOwner) => {
+          return (
+            <Accordion defaultExpanded={true} key={bookOwner.ownerAgeCategory}>
+              <AccordionSummary
+                expandIcon={<ArrowDropDownIcon />}
+                key={bookOwner.ownerAgeCategory}
+              >
+                <Typography variant="h6" component="span">
+                  {bookOwner.ownerAgeCategory}
+                </Typography>
+              </AccordionSummary>
+              <BookList
+                books={bookOwner.booksByAge}
+                selectedBookType={selectedBookType}
+              />
+            </Accordion>
+          );
+        })}
     </div>
   );
 }
