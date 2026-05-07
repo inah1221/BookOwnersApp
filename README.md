@@ -5,6 +5,7 @@
 - Front-end uses vite for build/run.
 - Run npm install.
 - Use "npm run dev" command to run the UI.
+- Should there be any changes in the port number of the API, it can be reconfigured in the .env file.
 
 ## Assumptions
 
