@@ -14,5 +14,5 @@
 
 ## Authentication
 
-- Guest tokens are created when app is first refreshed for authentication.
+- Guest tokens are created when app is first loaded for authentication.
 - Guest tokens are only valid for an hour. They must be deleted from local storage before refreshing the app again.
