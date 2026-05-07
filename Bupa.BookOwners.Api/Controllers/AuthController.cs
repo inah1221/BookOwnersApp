@@ -14,12 +14,10 @@ namespace Bupa.BookOwners.Api.Controllers
     [Route("api/Auth")]
     public class AuthController : ControllerBase
     {
-        private readonly ILogger<AuthController> _logger;
         private readonly IConfiguration _configuration;
 
-        public AuthController(ILogger<AuthController> logger, IConfiguration configuration)
+        public AuthController(IConfiguration configuration)
         {
-            _logger = logger;
             _configuration = configuration;
         }
 
@@ -50,8 +48,10 @@ namespace Bupa.BookOwners.Api.Controllers
             }
             else
             {
-                _logger.LogError("Jwt Key configration is missing.");
-                return StatusCode(500);
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    "Jwt Key configration is missing."
+                );
             }
         }
     }

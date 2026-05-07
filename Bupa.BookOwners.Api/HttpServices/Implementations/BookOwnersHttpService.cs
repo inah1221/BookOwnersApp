@@ -26,11 +26,11 @@ namespace Bupa.BookOwners.Api.HttpServices.Implementations
         /// </summary>
         /// <returns>IEnumerable<BookOwnerDto></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public async Task<IEnumerable<BookOwnerDto>> FetchBookOwnersDataAsync()
+        public async Task<List<BookOwnerDto>> FetchBookOwnersDataAsync()
         {
             try
             {
-                if (_baseUrl == null)
+                if (string.IsNullOrWhiteSpace(_baseUrl))
                 {
                     string missingConfigMessage = "Book Owners URL is required";
                     _logger.LogError(missingConfigMessage);
@@ -51,13 +51,22 @@ namespace Bupa.BookOwners.Api.HttpServices.Implementations
                     || mediaType != "application/json"
                 )
                 {
-                    string errorMessage = $"Response body is empty or in an invalid format.";
-                    _logger.LogError(errorMessage);
+                    string errorMessage = "Response body is empty or in an invalid format.";
                     throw new InvalidOperationException(errorMessage);
                 }
 
                 var result = await response.Content.ReadFromJsonAsync<List<BookOwnerDto>>();
-                return result;
+                return result ?? [];
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
             }
             catch (Exception ex)
             {

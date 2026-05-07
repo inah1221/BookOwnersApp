@@ -8,6 +8,6 @@ namespace Bupa.BookOwners.Api.HttpServices.Interfaces
     /// <returns>IEnumerable<BookOwnerDto></returns>
     public interface IBookOwnersHttpService
     {
-        Task<IEnumerable<BookOwnerDto>> FetchBookOwnersDataAsync();
+        Task<List<BookOwnerDto>> FetchBookOwnersDataAsync();
     }
 }

@@ -12,15 +12,10 @@ namespace Bupa.BookOwner.Api.Controllers
     [Route("api/BookOwner")]
     public class BookOwnerController : ControllerBase
     {
-        private readonly ILogger<BookOwnerController> _logger;
         private readonly IBookOwnersService _bookOwnersService;
 
-        public BookOwnerController(
-            ILogger<BookOwnerController> logger,
-            IBookOwnersService bookOwnerService
-        )
+        public BookOwnerController(IBookOwnersService bookOwnerService)
         {
-            _logger = logger;
             _bookOwnersService = bookOwnerService;
         }
 
@@ -33,9 +28,7 @@ namespace Bupa.BookOwner.Api.Controllers
             var books = await _bookOwnersService.GetBooks();
             if (books == null || books.Count() == 0)
             {
-                var message = "Book list is empty";
-                _logger.LogError(message);
-                return StatusCode(StatusCodes.Status400BadRequest, message);
+                return StatusCode(StatusCodes.Status400BadRequest, "Book list is empty.");
             }
             return Ok(books);
         }
