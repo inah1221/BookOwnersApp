@@ -24,7 +24,6 @@ namespace Bupa.BookOwners.Api.Controllers
         /// <summary>
         /// Returns a guest token to be used for authentication
         /// </summary>
-        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet(nameof(GetGuestToken))]
         public IActionResult GetGuestToken()

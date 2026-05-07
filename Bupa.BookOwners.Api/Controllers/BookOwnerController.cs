@@ -36,7 +36,6 @@ namespace Bupa.BookOwner.Api.Controllers
         /// <summary>
         /// Gets Book Types
         /// </summary>
-        /// <returns></returns>
         [HttpGet(nameof(GetBookTypes))]
         public IActionResult GetBookTypes()
         {

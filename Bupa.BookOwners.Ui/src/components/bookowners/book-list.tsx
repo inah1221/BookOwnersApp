@@ -5,7 +5,7 @@ import EmptyList from '../shared/empty-list';
 import { ALL } from '../../constants';
 import type Book from '../../types/book';
 
-export interface BookListProps {
+interface BookListProps {
   books: Book[];
   selectedBookType: string;
 }
